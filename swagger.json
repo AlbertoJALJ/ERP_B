@@ -1,0 +1,1098 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Benafi Admin Backend",
+    "version": "1.0.0",
+    "description": "API Benafi",
+    "license": {
+      "name": "MIT",
+      "url": "https://spdx.org/licenses/MIT.html"
+    },
+    "contact": {
+      "name": "Alberto lópez jiménez",
+      "url": "http://albertolj.dev",
+      "email": "alberto.lopez@pixelarte.mx"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:{port}",
+      "description": "Test server",
+      "variables": {
+        "port": {
+          "enum": [
+            "3000"
+          ],
+          "default": "3000"
+        }
+      }
+    },
+    {
+      "url": "https://radiant-atoll-54710.herokuapp.com/",
+      "description": "heroku server"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "summary": "Retorna todos los usuarios",
+        "operationId": "getUsers",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/parameters"
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/login": {
+      "post": {
+        "summary": "Inicio de sesión",
+        "responses": {
+          "200": {
+            "description": "Retorna un Token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "email": "sample@mail.com",
+                    "password": "sample_password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/signup": {
+      "post": {
+        "summary": "Registrar nuevo usuario",
+        "responses": {
+          "200": {
+            "description": "Retorna la información del usuario creado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "email": "sample@mail.com",
+                    "password": "sample_password",
+                    "role": "id_de_un_rol",
+                    "name": "nombre_del_usuario"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/parameters"
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/update/{id}": {
+      "post": {
+        "summary": "Actualiza el correo o el nombre de un usuario",
+        "responses": {
+          "200": {
+            "description": "Retorna la información del usuario actualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "email": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "email": "sample@mail.com",
+                    "name": "nombre_del_usuario"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/parameters"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "user id"
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/update/password/{id}": {
+      "post": {
+        "summary": "Actualiza la contraseña del usuario",
+        "responses": {
+          "200": {
+            "description": "Retorna un mensaje confirmando la actualización",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "password": {
+                  "type": "string"
+                },
+                "old_password": {
+                  "type": "string"
+                }
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "old_password": "sample_old_password",
+                    "password": "sample_new_password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/parameters"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "user id"
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/cuadrology/cupon/create" :{
+      "post": {
+        "summary": "Registrar un cupón nuevo",
+        "responses": {
+          "200": {
+            "description": "Retorna el cupón creado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Descuento"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "codigo": {
+                  "type": "string"
+                },
+                "descripcion": {
+                  "type": "string"
+                },
+                "tipo": {
+                  "type": "string"
+                },
+                "monto": {
+                  "type": "string"
+                },
+                "descripcion": {
+                  "type": "string"
+                },
+                "cantidad_llevar": {
+                  "type": "string"
+                },
+                "cantidad_pagar": {
+                  "type": "string"
+                },
+                "fecha_expiracion": {
+                  "type": "string"
+                },
+                "cupones_restantes": {
+                  "type": "string"
+                },
+                "generado_por": {
+                  "type": "string"
+                },
+                "precio_cuadro_extra": {
+                  "type": "string"
+                }
+              },
+              "examples": {
+                "cupon": {
+                  "value": {
+                    "codigo": "BUENFIN20201",
+                    "descripcion": "Llevate 10 cuadros por tan solo 3000",
+                    "tipo": "buySomeFixedPrice",
+                    "monto": 123,
+                    "cantidad_llevar": "3",
+                    "cantidad_pagar": "4",
+                    "fecha_expiracion": "new Date()",
+                    "cupones_restantes": "20",
+                    "generado_por": "cuadrology",
+                    "precio_cuadro_extra": "1000"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Cuadrology"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters"
+          }
+        ]
+      }
+    },
+    "/cuadrology/cupon/comprobar/{cupon}": {
+      "get": {
+        "summary": "Registrar un cupón nuevo",
+        "responses": {
+          "200": {
+            "description": "Retorna el cupón creado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Descuento"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Cuadrology"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters"
+          },
+          {
+            "name": "cupon",
+            "in": "path",
+            "required": true,
+            "description": "Codigo del cupon"
+          }
+        ]
+      }
+    },
+    "/cuadrology/cupon/delete/{cupon}": {
+      "post": {
+        "summary": "Eliminar un cupón",
+        "responses": {
+          "200": {
+            "description": "Retorna un 200"
+          }
+        },
+        "tags": [
+          "Cuadrology"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters"
+          },
+          {
+            "name": "cupon",
+            "in": "path",
+            "required": true,
+            "description": "Codigo del cupon"
+          }
+        ]
+      }
+    },
+    "/cuadrology/pedido/check/": {
+      "post": {
+        "summary": "Verificar pedido",
+        "responses": {
+          "200": {
+            "description": "Retorna el total y el cupón en caso de aplicar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Descuento"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "cupon": {
+                  "type": "string"
+                },
+                "cantidad_productos": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }                
+              },
+              "examples": {
+                "cupon": {
+                  "value": {
+                    "cupon": "BUENFIN20201",
+                    "cantidad_productos": "5",
+                    "total": "1500"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Cuadrology"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters"
+          }
+        ]
+      }
+    },
+    "/cuadrology/pedido/create/": {
+      "post": {
+        "summary": "Crear nuevo pedido",
+        "responses": {
+          "200": {
+            "description": "Retorna el pedido creado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pedido"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "nombres": {
+                  "type": "string"
+                },
+                "apellido_paterno": {
+                  "type": "string"
+                },
+                "apellido_materno": {
+                  "type": "string"
+                },
+                "telefono": {
+                  "type": "integer"
+                },
+                "correo_electronico": {
+                  "type": "string"
+                },
+                "calle": {
+                  "type": "string"
+                },
+                "numero": {
+                  "type": "integer"
+                },
+                "cp": {
+                  "type": "integer"
+                },
+                "colonia": {
+                  "type": "string"
+                },
+                "municipio": {
+                  "type": "string"
+                },
+                "estado": {
+                  "type": "string"
+                },
+                "pais": {
+                  "type": "string"
+                },
+                "costos": {
+                  "type": "integer"
+                },
+                "notas": {
+                  "type": "string"
+                },
+                "productos": {
+                  "$ref":"#/components/schemas/Descuento"
+                }
+              },
+              "examples": {
+                "cupon": {
+                  "value": {
+                    "nombres": "alberto",
+                    "apellido_paterno": "lopez",
+                    "apellido_materno": "jimenez",
+                    "telefono": 9711111111,
+                    "correo_electronico": "alberto.lopez@pixelarte.mx",
+                    "calle":"asdasda" ,
+                    "numero": 123,
+                    "cp": 1231231,
+                    "colonia": "asdasdas",
+                    "municipio": "sadsada",
+                    "estado": "sdada",
+                    "pais": "asdasda",
+                    "costos": "BUENFIN20201",
+                    "notas": "BUENFIN20201",
+                    "productos": "BUENFIN20201"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Cuadrology"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters"
+          }
+        ]
+      }
+    }
+
+  },
+  "components": {
+    "schemas": {
+      "error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "ok": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Cuadrology_info": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "required": true
+          },
+          "precio_unitario": {
+            "type": "integer"
+          },
+          "cantidad_minima_cuadros": {
+            "type": "integer"
+          },
+          "precio_cantidad_minima_cuadros": {
+            "type": "integer"
+          }
+        }
+      },
+      "Categoria": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string"
+          },
+          "subcategoria": {
+            "type": "string"
+          }
+        }
+      },
+      "Client": {
+        "type": "object",
+        "properties": {
+          "nombres": {
+            "type": "string"
+          },
+          "apellido_paterno": {
+            "type": "string"
+          },
+          "apellido_materno": {
+            "type": "string"
+          },
+          "telefono": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "genero": {
+            "type": "string"
+          },
+          "direcciones": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Direccion"
+            }
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "required": true
+          },
+          "email": {
+            "type": "string",
+            "required": true
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "required": true
+          },
+          "role": {
+            "type": "array",
+            "required": true,
+            "items": {
+              "$ref": "#/components/schemas/Role"
+            }
+          },
+          "name": {
+            "type": "string",
+            "required": true
+          }
+        }
+      },
+      "direccion": {
+        "type": "object",
+        "properties": {
+          "tipo": {
+            "type": "string"
+          },
+          "calle": {
+            "type": "string"
+          },
+          "numero": {
+            "type": "integer"
+          },
+          "municipio": {
+            "type": "string"
+          },
+          "colonia": {
+            "type": "string"
+          },
+          "estado": {
+            "type": "string"
+          },
+          "pais": {
+            "type": "string"
+          },
+          "cp": {
+            "type": "integer"
+          }
+        }
+      },
+      "Descuento": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "required": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "required": true
+          },
+          "codigo": {
+            "type": "string",
+            "required": true
+          },
+          "descripcion": {
+            "type": "string",
+            "required": true
+          },
+          "tipo": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "fixed",
+              "percentage",
+              "buyAndSomeFree",
+              "buySomeFixedPrice"
+            ]
+          },
+          "monto": {
+            "type": "integer"
+          },
+          "cantidad_llevar": {
+            "type": "integer"
+          },
+          "cantidad_pagar": {
+            "type": "integer"
+          },
+          "fecha_expiracion": {
+            "type": "string",
+            "format": "date-time",
+            "required": true
+          },
+          "cupones_restantes": {
+            "type": "integer",
+            "required": true
+          },
+          "pedidos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Pedido"
+            }
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "generado_por": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "venta",
+              "manual"
+            ]
+          },
+          "marca": {
+            "type": "string",
+            "required": true
+          },
+          "precio_cuadro_extra": {
+            "type": "integer"
+          }
+        }
+      },
+      "Image": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "required": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "required": true
+          },
+          "nombre": {
+            "type": "string",
+            "required": true
+          },
+          "path": {
+            "type": "string",
+            "required": true
+          },
+          "status": {
+            "type": "string",
+            "required": true
+          },
+          "proovedor": {
+            "type": "string",
+            "required": true
+          },
+          "codigo": {
+            "type": "string",
+            "required": true
+          },
+          "categoria": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Categoria"
+            }
+          }
+        }
+      },
+      "Pedido": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "required": true
+          },
+          "marca": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "Pixelarte",
+              "Canvas Revolution",
+              "Cuadrology"
+            ]
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time",
+            "required": true
+          },
+          "productos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Producto"
+            }
+          },
+          "productos_cuadrology": {
+            "type": "object",
+            "properties": {
+              "isGift": {
+                "type": "boolean"
+              },
+              "tiles_quantity": {
+                "type": "integer"
+              },
+              "tiles_color": {
+                "type": "string"
+              },
+              "tiles_images": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "detalles_facturacion": {
+            "type": "object",
+            "properties": {
+              "nombre_facturacion": {
+                "type": "string"
+              },
+              "rfc": {
+                "type": "string"
+              },
+              "forma_pago": {
+                "type": "string"
+              },
+              "metodo_pago": {
+                "type": "string"
+              },
+              "direccion_facturacion": {
+                "type": "string"
+              },
+              "uso_cfdi": {
+                "type": "string"
+              }
+            }
+          },
+          "envio": {
+            "type": "object",
+            "properties": {
+              "compania": {
+                "type": "string"
+              },
+              "codigo_seguimiento": {
+                "type": "string"
+              },
+              "direccion": {
+                "type": "object",
+                "properties": {
+                  "tipo": {
+                    "type": "string"
+                  },
+                  "calle": {
+                    "type": "string"
+                  },
+                  "numero": {
+                    "type": "integer"
+                  },
+                  "municipio": {
+                    "type": "string"
+                  },
+                  "colonia": {
+                    "type": "string"
+                  },
+                  "estado": {
+                    "type": "string"
+                  },
+                  "pais": {
+                    "type": "string"
+                  },
+                  "cp": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "costos": {
+            "type": "object",
+            "properties": {
+              "impuestos": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "total": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          },
+          "cliente": {
+            "type": "object",
+            "$ref": "#/components/schemas/Client"
+          },
+          "canal_venta": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "No preparado",
+              "espera",
+              "diseno",
+              "impresion",
+              "ensamble",
+              "empaque",
+              "por_entregar",
+              "entregado",
+              "finalizado"
+            ]
+          },
+          "devoluciones": {
+            "type": "object",
+            "properties": {
+              "razon": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "espera",
+                  "diseno",
+                  "impresion",
+                  "ensamble",
+                  "empaque",
+                  "por_entregar",
+                  "entregado",
+                  "finalizado"
+                ]
+              }
+            }
+          },
+          "vendedor": {
+            "type": "string"
+          },
+          "notas": {
+            "type": "string"
+          }
+        }
+      },
+      "titles": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Producto": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "required": true
+          },
+          "marca": {
+            "type": "string",
+            "enum": [
+              "Pixelarte",
+              "Canvas Revolution",
+              "Cuadrology"
+            ]
+          },
+          "image": {
+            "type": "string",
+            "$ref": "#/components/schemas/Image"
+          },
+          "sku": {
+            "type": "string",
+            "required": true
+          },
+          "titles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/titles"
+            }
+          },
+          "modelo": {
+            "type": "string"
+          },
+          "formato": {
+            "type": "string"
+          },
+          "dimension": {
+            "type": "string"
+          },
+          "precio": {
+            "type": "integer"
+          },
+          "marco": {
+            "type": "object",
+            "properties": {
+              "modelo": {
+                "type": "string"
+              },
+              "color": {
+                "type": "string"
+              },
+              "precio": {
+                "type": "integer"
+              }
+            }
+          },
+          "descripcion": {
+            "type": "string"
+          },
+          "stock": {
+            "type": "integer"
+          }
+        }
+      },
+      "Role": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "required": true
+          },
+          "name": {
+            "type": "string",
+            "required": true
+          },
+          "description": {
+            "type": "string",
+            "required": true
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Operaciones relacionadas a los usuarios"
+    },
+    {
+      "name": "Cuadrology",
+      "description": "Operaciones relacionadas a la tienda de Cuadrology"
+    }
+  ],
+  "parameters": {
+    "name": "secret_token",
+    "in": "header",
+    "description": "Token api",
+    "required": true
+  },
+  "definitions": {}
+}
